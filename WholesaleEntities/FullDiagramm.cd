@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WholesaleEntities.DataBaseControllers.DataBaseConnection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAACAAAAAAAAAAAAAAAAAAAAAAQAAAABAABAA=</HashCode>
+      <FileName>DataBaseControllers\DataBaseConnection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WholesaleEntities.DataBaseControllers.WholesaleContext" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEEAAEQAQAQAAgAAAAAAAAAEAAEAAEABAAgCAQAAAQ=</HashCode>
+      <FileName>DataBaseControllers\WholesaleContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WholesaleEntities.Models.Customer" Collapsed="true">
+    <Position X="2.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAQAAAAEABACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Customer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WholesaleEntities.Models.Employer" Collapsed="true">
+    <Position X="4.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAQAAAAEAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Models\Employer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WholesaleEntities.Models.Manufacturer" Collapsed="true">
+    <Position X="6" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAEAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\Manufacturer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WholesaleEntities.Models.ManufacturersInformation" Collapsed="true">
+    <Position X="8" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIQAA=</HashCode>
+      <FileName>Models\ManufacturersInformation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WholesaleEntities.Models.Product" Collapsed="true">
+    <Position X="8" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAgAAAAAAAAABAAAAAAQAAQAAAEUAAAgAQAACAAAAAA=</HashCode>
+      <FileName>Models\Product.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WholesaleEntities.Models.ProductBalance" Collapsed="true">
+    <Position X="2.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAACAIAgA=</HashCode>
+      <FileName>Models\ProductBalance.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WholesaleEntities.Models.ProductType" Collapsed="true">
+    <Position X="4.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAgAAAAAAAAAAQAAAAAAAAAAAAACAAAAAQ=</HashCode>
+      <FileName>Models\ProductType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WholesaleEntities.Models.Provaider" Collapsed="true">
+    <Position X="6" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAQAAAAAAAACAAAACAAAAIA=</HashCode>
+      <FileName>Models\Provaider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WholesaleEntities.Models.ProvidersInformation" Collapsed="true">
+    <Position X="6" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEAAAABIAAA=</HashCode>
+      <FileName>Models\ProvidersInformation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WholesaleEntities.Models.ReceiptReport" Collapsed="true">
+    <Position X="8" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GAAGAAAADAIEAAAAAAQAAAAAAAAAAAAAAAIAAAAAAoQ=</HashCode>
+      <FileName>Models\ReceiptReport.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WholesaleEntities.Models.ReleaseReport" Collapsed="true">
+    <Position X="2.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GAEGEAAABAAMAAAAAAQAAAAAAAAAABAAAAIAAAAAAgA=</HashCode>
+      <FileName>Models\ReleaseReport.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WholesaleEntities.Models.Storage" Collapsed="true">
+    <Position X="4.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAQAAAAEAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Models\Storage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

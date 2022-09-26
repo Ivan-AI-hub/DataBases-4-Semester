@@ -5,11 +5,11 @@ using WholesaleEntities.DataBaseControllers;
 void PrintTable<T>(IQueryable<T> dbSet) where T : class
 {
     ConsoleTable table = new ConsoleTable();
-    table.AddColumn(typeof(T).GetProperties().Select(x => x.Name).ToList());
+    table.AddColumn(typeof(T).GetProperties().Where(x => !x.PropertyType.IsGenericType).Select(x => x.Name).ToList());
 
     foreach(var data in dbSet)
     {
-        table.AddRow(data.GetType().GetProperties().Select(x => x.GetValue(data)).ToArray());
+        table.AddRow(data.GetType().GetProperties().Where(x => !x.PropertyType.IsGenericType).Select(x => x.GetValue(data)).ToArray());
     }
     table.Write();
 }
@@ -20,8 +20,8 @@ using (WholesaleContext db = new WholesaleContext())
     var customers = db.Customers;
     Console.WriteLine("1.FullCustomersTable (Press Enter)");
     Console.ReadLine();
-
     PrintTable(customers);
+
     Console.WriteLine("2.CustomersTable with realeases more than 1(Press Enter)");
     Console.ReadLine();
     PrintTable(customers.Where(x => x.ReleaseReports.Count > 1));
@@ -83,11 +83,11 @@ using (WholesaleContext db = new WholesaleContext())
     db.Products.Add(product);
 
     //8........
-    var manufacturer = db.Manufacturers.FirstOrDefault();
+    var manufacturer = db.Manufacturers.First();
     db.Manufacturers.Remove(manufacturer);
 
     //9....
-    var receipReport = db.ReceiptReports.FirstOrDefault();
+    var receipReport = db.ReceiptReports.First();
     db.ReceiptReports.Remove(receipReport);
     //10...
 
