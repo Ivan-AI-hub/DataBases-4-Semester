@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using WholesaleEntities.Models;
 
-namespace EntityTest.DataBases
+namespace WholesaleEntities.DataBaseControllers
 {
     public partial class WholesaleContext : DbContext
     {
@@ -33,7 +34,7 @@ namespace EntityTest.DataBases
         {
             if (!optionsBuilder.IsConfigured)
             {
-               optionsBuilder.UseSqlServer(DataBaseConnection.Instance.GetConnection());
+                optionsBuilder.UseSqlServer(DataBaseConnection.Instance.GetConnection());
             }
         }
 

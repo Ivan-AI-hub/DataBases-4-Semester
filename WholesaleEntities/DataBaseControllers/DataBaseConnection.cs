@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Data.Common;
 
-namespace EntityTest.DataBases
+namespace WholesaleEntities.DataBaseControllers
 {
     public class DataBaseConnection : IDisposable
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EntityTest
+namespace WholesaleEntities.Models
 {
     public partial class ProductBalance
     {

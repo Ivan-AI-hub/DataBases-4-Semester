@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EntityTest
+namespace WholesaleEntities.Models
 {
-    public partial class Employer
+    public partial class Provaider
     {
-        public Employer()
+        public Provaider()
         {
             ReceiptReports = new HashSet<ReceiptReport>();
-            ReleaseReports = new HashSet<ReleaseReport>();
         }
 
-        public int EmployerId { get; set; }
+        public int ProvaiderId { get; set; }
         public string Name { get; set; } = null!;
+        public string Address { get; set; } = null!;
+        public string TelephoneNumber { get; set; } = null!;
 
         public virtual ICollection<ReceiptReport> ReceiptReports { get; set; }
-        public virtual ICollection<ReleaseReport> ReleaseReports { get; set; }
     }
 }

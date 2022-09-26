@@ -1,6 +1,6 @@
 ﻿using ConsoleTables;
-using EntityTest;
-using EntityTest.DataBases;
+using WholesaleEntities.Models;
+using WholesaleEntities.DataBaseControllers;
 
 void PrintTable<T>(IQueryable<T> dbSet) where T : class
 {
