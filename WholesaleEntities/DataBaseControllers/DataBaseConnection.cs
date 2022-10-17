@@ -1,10 +1,11 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System.Configuration;
 using System.Data.Common;
 
-namespace WholesaleEntities.DataBaseControllers
+namespace WholesaleEntities
 {
-    public class DataBaseConnection : IDisposable
+    public class DataBaseConnection
     {
         private DbConnection _connection;
         private static DataBaseConnection _instance;
@@ -23,17 +24,13 @@ namespace WholesaleEntities.DataBaseControllers
 
         private DataBaseConnection()
         {
-            _connection = new SqlConnection(ConfigurationManager.ConnectionStrings["MainConnection"].ConnectionString);
+            string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Database=Wholesale;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            _connection = new SqlConnection(connectionString);
         }
 
         public DbConnection GetConnection()
         {
             return _connection;
-        }
-
-        public void Dispose()
-        {
-            _connection.Close();
         }
     }
 }
