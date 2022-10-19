@@ -5,19 +5,37 @@ using WholesaleEntities.Models;
 
 namespace Web.Services
 {
-    public class ReceiptReportService : BaseTableService<ReceiptReport>
+    public class ReceiptReportService : ITableService<ReceiptReport>
     {
-        public ReceiptReportService(IMemoryCache cache, WholesaleContext context) : base(cache, context)
+        public WholesaleContext Context { get; }
+
+        public IMemoryCache Cache { get; }
+
+        public int CacheTime { get; }
+
+        public ReceiptReportService(IMemoryCache cache, WholesaleContext context)
         {
+            Cache = cache;
+            Context = context;
+            CacheTime = 240;
         }
 
-        protected override void Initialize(out List<ReceiptReport> quary)
+        public IEnumerable<ReceiptReport> GetAll()
         {
-            quary = Context.ReceiptReports
+            return Context.ReceiptReports
                 .Include(x => x.Provaider)
                 .Include(x => x.Product)
                 .Include(x => x.Employer)
-                .Include(x => x.Storage).ToList();
+                .Include(x => x.Storage).AsEnumerable();
+        }
+
+        public IEnumerable<ReceiptReport> GetByCondition(Func<ReceiptReport, bool> predicate)
+        {
+            return Context.ReceiptReports
+                .Include(x => x.Provaider)
+                .Include(x => x.Product)
+                .Include(x => x.Employer)
+                .Include(x => x.Storage).Where(x => predicate(x)).AsEnumerable();
         }
     }
 }

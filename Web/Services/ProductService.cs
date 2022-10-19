@@ -5,15 +5,29 @@ using WholesaleEntities.Models;
 
 namespace Web.Services
 {
-    public class ProductService : BaseTableService<Product>
+    public class ProductService : ITableService<Product>
     {
-        public ProductService(IMemoryCache cache, WholesaleContext context) : base(cache, context)
+        public WholesaleContext Context { get; }
+
+        public IMemoryCache Cache { get; }
+
+        public int CacheTime { get; }
+
+        public ProductService(IMemoryCache cache, WholesaleContext context)
         {
+            Cache = cache;
+            Context = context;
+            CacheTime = 240;
         }
 
-        protected override void Initialize(out List<Product> quary)
+        public IEnumerable<Product> GetAll()
         {
-            quary = Context.Products.Include(x => x.Manufacturer).Include(x => x.Type).ToList(); 
+            return Context.Products.Include(x => x.Manufacturer).Include(x => x.Type).AsEnumerable();
+        }
+
+        public IEnumerable<Product> GetByCondition(Func<Product, bool> predicate)
+        {
+            return Context.Products.Include(x => x.Manufacturer).Include(x => x.Type).Where(x => predicate(x)).AsEnumerable();
         }
     }
 }

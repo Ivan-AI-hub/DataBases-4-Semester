@@ -4,15 +4,29 @@ using WholesaleEntities.Models;
 
 namespace Web.Services
 {
-    public class CustomerService : BaseTableService<Customer>
+    public class CustomerService : ITableService<Customer>
     {
-        public CustomerService(IMemoryCache cache, WholesaleContext context) : base(cache, context)
+        public WholesaleContext Context { get; }
+
+        public IMemoryCache Cache { get; }
+
+        public int CacheTime { get; }
+
+        public CustomerService(IMemoryCache cache, WholesaleContext context)
         {
+            Cache = cache;
+            Context = context;
+            CacheTime = 240;
         }
 
-        protected override void Initialize(out List<Customer> quary)
+        public IEnumerable<Customer> GetAll()
         {
-            quary = Context.Customers.ToList();
+            return Context.Customers.AsEnumerable();
+        }
+
+        public IEnumerable<Customer> GetByCondition(Func<Customer, bool> predicate)
+        {
+            return Context.Customers.Where(x => predicate(x)).AsEnumerable();
         }
     }
 }
