@@ -13,13 +13,15 @@ namespace Web
             services.AddTransient<WholesaleContext>();
             services.AddTransient<CustomerService>();
             services.AddTransient<ProductService>();
+            services.AddTransient<ManufacturerService>();
             services.AddTransient<ReceiptReportService>();
             services.AddMemoryCache();
             services.AddControllersWithViews();
         }
 
         public void Configure(IHostEnvironment environment, IApplicationBuilder app,
-            CustomerService customerService, ProductService productService, ReceiptReportService receiptReportService)
+            CustomerService customerService, ProductService productService, ReceiptReportService receiptReportService,
+            ManufacturerService manufacturerService)
         {
             if (environment.IsDevelopment())
             {
@@ -93,9 +95,26 @@ namespace Web
                     builder.Append("<div>");
                     builder.Append("<H1>Products Search<H1>");
                     builder.Append("<form>");
+
                     builder.Append("<p><b>Product name</b></p>");
                     builder.Append("<input type = 'text' name = 'productName'></input>");
-                    builder.Append("<button name = 'button'></button>");
+
+                    builder.Append("<p><b>Storage conditions</b></p>");
+                    builder.Append("<input type = 'text' name = 'storageConditions'></input>");
+
+                    builder.Append("<p><b>Package</b></p>");
+                    builder.Append("<input type = 'text' name = 'package'></input>");
+
+                    builder.Append("<p><b>Manufacturer</b></p>");
+                    builder.Append("<select name='manufacturerName'>");
+                    foreach (var manufacturer in manufacturerService.GetAll())
+                    {
+                        builder.Append($"<option value='{manufacturer.ManufacturerId}'> {manufacturer.Name}</opinion>");
+                    }
+
+                    builder.Append("</select>");
+
+                    builder.Append("<button name = 'button'>Search</button>");
                     builder.Append("</form>");
                     builder.Append("</div>");
                     return context.Response.WriteAsync(builder.ToString());

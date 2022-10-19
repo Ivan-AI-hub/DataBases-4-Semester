@@ -14,6 +14,9 @@
             if (context.Request.Path == @"/Product/Search")
             {
                 var productName = context.Request.Query["productName"];
+                var storageConditions = context.Request.Query["storageConditions"];
+                var package = context.Request.Query["package"];
+                var manufacturerId = context.Request.Query["manufacturerName"];
             }
             
             await _next.Invoke(context);
