@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Text;
+using Web.Middleware;
 using Web.Services;
 using WholesaleEntities.DataBaseControllers;
 
@@ -27,6 +28,7 @@ namespace Web
             }
 
             app.UseRouting();
+            app.UseMiddleware<ButtonHandlerMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", (context) =>
@@ -39,6 +41,35 @@ namespace Web
                     builder.Append(@"<a href = '/Product'>Products table</a></br>");
                     return context.Response.WriteAsync(builder.ToString());
                 });
+                #region ReceiptReportTable
+                endpoints.MapGet("/ReceiptReport", (context) =>
+                {
+                    var builder = new StringBuilder();
+                    builder.Append("<div>");
+                    builder.Append("<H1>ReceiptReports table<H1>");
+                    builder.Append("<table>");
+                    builder.Append($"<td> OrderDate</td>" +
+                                       $"<td> Product</td>" +
+                                       $"<td> Volume</td>" +
+                                       $"<td> Storage</td>" +
+                                       $"<td> Provaider</td>");
+                    foreach (var receive in receiptReportService.GetAll())
+                    {
+                        builder.Append("<tr>");
+                        builder.Append($"<td> {receive.OrderDate}</td>" +
+                                       $"<td> {receive.Product.Name}</td>" +
+                                       $"<td> {receive.Volume}</td>" +
+                                       $"<td> {receive.Storage.Name}</td>" +
+                                       $"<td> {receive.Provaider.Name}</td>");
+                        builder.Append("</tr>");
+                    }
+                    builder.Append("</table>");
+                    builder.Append("</div>");
+                    return context.Response.WriteAsync(builder.ToString());
+                });
+                #endregion
+
+                #region ProductTable
                 endpoints.MapGet("/Product", (context) =>
                 {
                     var builder = new StringBuilder();
@@ -56,6 +87,22 @@ namespace Web
                     builder.Append("</div>");
                     return context.Response.WriteAsync(builder.ToString());
                 });
+                endpoints.MapGet("/Product/Search", (context) =>
+                {
+                    var builder = new StringBuilder();
+                    builder.Append("<div>");
+                    builder.Append("<H1>Products Search<H1>");
+                    builder.Append("<form>");
+                    builder.Append("<p><b>Product name</b></p>");
+                    builder.Append("<input type = 'text' name = 'productName'></input>");
+                    builder.Append("<button name = 'button'></button>");
+                    builder.Append("</form>");
+                    builder.Append("</div>");
+                    return context.Response.WriteAsync(builder.ToString());
+                });
+                #endregion
+
+                #region CustomerTable
                 endpoints.MapGet("/Customer", (context) =>
                 {
                     var builder = new StringBuilder();
@@ -73,6 +120,7 @@ namespace Web
                     builder.Append("</div>");
                     return context.Response.WriteAsync(builder.ToString());
                 });
+                #endregion
                 endpoints.MapGet("/info", (context) =>
                 {
                     return context.Response.WriteAsync($"<H1>User: {context.User.ToString()}<H1>");

@@ -24,9 +24,14 @@ namespace Web.Services
 
         protected abstract void Initialize(out List<T> quary);
 
-        public List<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            return _quary.ToList();
+            return _quary.AsReadOnly();
+        }
+
+        public IEnumerable<T> GetByCondition(Func<T, bool> predicate)
+        {
+            return _quary.Where(predicate);
         }
     }
 }

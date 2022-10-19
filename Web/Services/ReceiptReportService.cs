@@ -13,7 +13,11 @@ namespace Web.Services
 
         protected override void Initialize(out List<ReceiptReport> quary)
         {
-            quary = Context.ReceiptReports.Include(x => x.Provaider).Include(x => x.Product).Include(x => x.Employer).ToList();
+            quary = Context.ReceiptReports
+                .Include(x => x.Provaider)
+                .Include(x => x.Product)
+                .Include(x => x.Employer)
+                .Include(x => x.Storage).ToList();
         }
     }
 }
