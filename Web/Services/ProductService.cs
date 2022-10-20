@@ -22,12 +22,12 @@ namespace Web.Services
 
         public IEnumerable<Product> GetAll()
         {
-            return Context.Products.Include(x => x.Manufacturer).Include(x => x.Type).AsEnumerable();
+            return Context.Products.Include(x => x.Manufacturer).Include(x => x.Type).ToList();
         }
 
         public IEnumerable<Product> GetByCondition(Func<Product, bool> predicate)
         {
-            return Context.Products.Include(x => x.Manufacturer).Include(x => x.Type).Where(x => predicate(x)).AsEnumerable();
+            return GetAll().Where(x => predicate(x));
         }
     }
 }

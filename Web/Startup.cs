@@ -10,7 +10,7 @@ namespace Web
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<WholesaleContext>();
+            services.AddSingleton<WholesaleContext>();
             services.AddTransient<CustomerService>();
             services.AddTransient<ProductService>();
             services.AddTransient<ManufacturerService>();
@@ -86,36 +86,6 @@ namespace Web
                         builder.Append("</tr>");
                     }
                     builder.Append("</table>");
-                    builder.Append("</div>");
-                    return context.Response.WriteAsync(builder.ToString());
-                });
-                endpoints.MapGet("/Product/Search", (context) =>
-                {
-                    var builder = new StringBuilder();
-                    builder.Append("<div>");
-                    builder.Append("<H1>Products Search<H1>");
-                    builder.Append("<form>");
-
-                    builder.Append("<p><b>Product name</b></p>");
-                    builder.Append("<input type = 'text' name = 'productName'></input>");
-
-                    builder.Append("<p><b>Storage conditions</b></p>");
-                    builder.Append("<input type = 'text' name = 'storageConditions'></input>");
-
-                    builder.Append("<p><b>Package</b></p>");
-                    builder.Append("<input type = 'text' name = 'package'></input>");
-
-                    builder.Append("<p><b>Manufacturer</b></p>");
-                    builder.Append("<select name='manufacturerName'>");
-                    foreach (var manufacturer in manufacturerService.GetAll())
-                    {
-                        builder.Append($"<option value='{manufacturer.ManufacturerId}'> {manufacturer.Name}</opinion>");
-                    }
-
-                    builder.Append("</select>");
-
-                    builder.Append("<button name = 'button'>Search</button>");
-                    builder.Append("</form>");
                     builder.Append("</div>");
                     return context.Response.WriteAsync(builder.ToString());
                 });
