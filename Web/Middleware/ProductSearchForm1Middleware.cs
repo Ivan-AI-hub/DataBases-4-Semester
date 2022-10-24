@@ -4,13 +4,13 @@ using WholesaleEntities.Models;
 
 namespace Web.Middleware
 {
-    public class ButtonHandlerMiddleware
+    public class ProductSearchForm1Middleware
     {
         private readonly RequestDelegate _next;
         private ProductService _productService;
         private ManufacturerService _manufacturerService;
 
-        public ButtonHandlerMiddleware(RequestDelegate next, ProductService productService, ManufacturerService manufacturerService)
+        public ProductSearchForm1Middleware(RequestDelegate next, ProductService productService, ManufacturerService manufacturerService)
         {
             this._next = next;
             _productService = productService;
@@ -21,12 +21,13 @@ namespace Web.Middleware
         {
 
             await _next.Invoke(context);
-            if (context.Request.Path == @"/Product/Search")
+            if (context.Request.Path == @"/Product/Search1")
             {
-                var productName = context.Request.Query["productName"].Count() > 0 ? context.Request.Query["productName"][0] : "";
-                var storageConditions = context.Request.Query["storageConditions"].Count() > 0? context.Request.Query["storageConditions"][0] : "";
-                var package = context.Request.Query["package"].Count() > 0 ? context.Request.Query["package"][0] : "";
-                var manufacturerId = context.Request.Query["manufacturerName"].Count() > 0? int.Parse(context.Request.Query["manufacturerName"][0]) : 0;
+                
+                var productName = GetValueFromCookie(context, "productName");
+                var storageConditions = GetValueFromCookie(context, "storageConditions");
+                var package = GetValueFromCookie(context, "package");
+                var manufacturerId = int.Parse(GetValueFromCookie(context, "manufacturerName","0"));
 
                 IEnumerable<Product> products;
                 if (manufacturerId == 0)
@@ -99,7 +100,28 @@ namespace Web.Middleware
                 {
                     builder.Append("<p><h2>products can not find</h2> <h1>-_-</h1></p>");
                 }
+
+                context.Response.Cookies.Append("productName", productName);
+                context.Response.Cookies.Append("storageConditions", storageConditions);
+                context.Response.Cookies.Append("package", package);
+                context.Response.Cookies.Append("manufacturerName", manufacturerId.ToString());
                 await context.Response.WriteAsync(builder.ToString());
+            }
+        }
+
+        private string GetValueFromCookie(HttpContext context, string cookieName, string defaultValue = "")
+        {
+            if(context.Request.Query[cookieName].Count() > 0)
+            {
+                return context.Request.Query[cookieName][0];
+            }
+            else if (context.Request.Cookies[cookieName] != null)
+            {
+                return context.Request.Cookies[cookieName];
+            }
+            else
+            {
+                return defaultValue;
             }
         }
     }

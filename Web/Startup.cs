@@ -15,6 +15,7 @@ namespace Web
             services.AddTransient<ProductService>();
             services.AddTransient<ManufacturerService>();
             services.AddTransient<ReceiptReportService>();
+            services.AddSession();
             services.AddMemoryCache();
             services.AddControllersWithViews();
         }
@@ -30,7 +31,7 @@ namespace Web
             }
 
             app.UseRouting();
-            app.UseMiddleware<ButtonHandlerMiddleware>();
+            app.UseMiddleware<ProductSearchForm1Middleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", (context) =>
@@ -41,6 +42,7 @@ namespace Web
                     builder.Append(@"<a href = '/Customer'>Customers table</a></br>");
                     builder.Append(@"<a href = '/ReceiptReport'>ReceiptReports table</a></br>");
                     builder.Append(@"<a href = '/Product'>Products table</a></br>");
+                    builder.Append(@"<a href = '/Product/Search1'>Product search with cookie</a></br>");
                     return context.Response.WriteAsync(builder.ToString());
                 });
                 #region ReceiptReportTable
