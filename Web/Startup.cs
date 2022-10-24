@@ -31,7 +31,9 @@ namespace Web
             }
 
             app.UseRouting();
+            app.UseSession();
             app.UseMiddleware<ProductSearchForm1Middleware>();
+            app.UseMiddleware<ProductSearchForm2Middleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", (context) =>
@@ -43,6 +45,7 @@ namespace Web
                     builder.Append(@"<a href = '/ReceiptReport'>ReceiptReports table</a></br>");
                     builder.Append(@"<a href = '/Product'>Products table</a></br>");
                     builder.Append(@"<a href = '/Product/Search1'>Product search with cookie</a></br>");
+                    builder.Append(@"<a href = '/Product/Search2'>Product search with session</a></br>");
                     return context.Response.WriteAsync(builder.ToString());
                 });
                 #region ReceiptReportTable

@@ -1,16 +1,17 @@
 ﻿using System.Text;
+using Web.Models;
 using Web.Services;
 using WholesaleEntities.Models;
 
 namespace Web.Middleware
 {
-    public class ProductSearchForm1Middleware
+    public class ProductSearchForm2Middleware
     {
         private readonly RequestDelegate _next;
         private ProductService _productService;
         private ManufacturerService _manufacturerService;
 
-        public ProductSearchForm1Middleware(RequestDelegate next, ProductService productService, ManufacturerService manufacturerService)
+        public ProductSearchForm2Middleware(RequestDelegate next, ProductService productService, ManufacturerService manufacturerService)
         {
             this._next = next;
             _productService = productService;
@@ -21,29 +22,25 @@ namespace Web.Middleware
         {
 
             await _next.Invoke(context);
-            if (context.Request.Path == @"/Product/Search1")
+            if (context.Request.Path == @"/Product/Search2")
             {
-                
-                var productName = GetValueFromCookie(context, "productName");
-                var storageConditions = GetValueFromCookie(context, "storageConditions");
-                var package = GetValueFromCookie(context, "package");
-                var manufacturerId = int.Parse(GetValueFromCookie(context, "manufacturerName", "0"));
+                var model = GetModelFromSession(context);
 
                 IEnumerable<Product> products;
-                if (manufacturerId == 0)
+                if (model.ManufacturerId == 0)
                 {
                     products = _productService.GetByCondition(x =>
                     {
-                        return x.Name.Contains(productName) && x.StorageConditions.Contains(storageConditions) &&
-                        x.Package.Contains(package);
+                        return x.Name.Contains(model.ProductName) && x.StorageConditions.Contains(model.StorageConditions) &&
+                        x.Package.Contains(model.Package);
                     });
                 }
                 else
                 {
                     products = _productService.GetByCondition(x =>
                     {
-                        return x.Name.Contains(productName) && x.StorageConditions.Contains(storageConditions) &&
-                        x.Package.Contains(package) && x.ManufacturerId == manufacturerId;
+                        return x.Name.Contains(model.ProductName) && x.StorageConditions.Contains(model.StorageConditions) &&
+                        x.Package.Contains(model.Package) && x.ManufacturerId == model.ManufacturerId;
                     });
                 }
 
@@ -53,21 +50,21 @@ namespace Web.Middleware
                 builder.Append("<form method='get'>");
 
                 builder.Append("<p><b>Product name</b></p>");
-                builder.Append($"<input type = 'text' name = 'productName' value = '{productName}'></input>");
+                builder.Append($"<input type = 'text' name = 'productName' value = '{model.ProductName}'></input>");
 
                 builder.Append("<p><b>Storage conditions</b></p>");
-                builder.Append($"<input type = 'text' name = 'storageConditions'  value = '{storageConditions}'></input>");
+                builder.Append($"<input type = 'text' name = 'storageConditions'  value = '{model.StorageConditions}'></input>");
 
                 builder.Append("<p><b>Package</b></p>");
-                builder.Append($"<input type = 'text' name = 'package'  value = '{package}'></input>");
+                builder.Append($"<input type = 'text' name = 'package'  value = '{model.Package}'></input>");
 
                 builder.Append("<p><b>Manufacturer</b></p>");
-                builder.Append($"<select name='manufacturerName'  value = '{manufacturerId}'>");
+                builder.Append($"<select name='manufacturerName'  value = '{model.ManufacturerId}'>");
                 builder.Append($"<option value='0'> Any</opinion>");
 
                 foreach (var manufacturer in _manufacturerService.GetAll())
                 {
-                    if(manufacturerId == manufacturer.ManufacturerId)
+                    if (model.ManufacturerId == manufacturer.ManufacturerId)
                     {
                         builder.Append($"<option selected value='{manufacturer.ManufacturerId}'> {manufacturer.Name}</opinion>");
                     }
@@ -101,27 +98,40 @@ namespace Web.Middleware
                     builder.Append("<p><h2>products can not find</h2> <h1>-_-</h1></p>");
                 }
 
-                context.Response.Cookies.Append("productName", productName);
-                context.Response.Cookies.Append("storageConditions", storageConditions);
-                context.Response.Cookies.Append("package", package);
-                context.Response.Cookies.Append("manufacturerName", manufacturerId.ToString());
+                context.Session.Set("model", model);
                 await context.Response.WriteAsync(builder.ToString());
             }
         }
 
-        private string GetValueFromCookie(HttpContext context, string cookieName, string defaultValue = "")
+        private ProductSearchModel GetModelFromSession(HttpContext context)
         {
-            if(context.Request.Query[cookieName].Count() > 0)
+            if (context.Request.Query["productName"].Count() > 0)
             {
-                return context.Request.Query[cookieName][0];
+                ProductSearchModel model = new ProductSearchModel
+                {
+                    ProductName = context.Request.Query["productName"],
+                    StorageConditions = context.Request.Query["storageConditions"],
+                    Package = context.Request.Query["package"],
+                    ManufacturerId = int.Parse(context.Request.Query["manufacturerName"])
+                };
+                context.Session.Set("model", model);
+                return model;
             }
-            else if (context.Request.Cookies[cookieName] != null)
+            else if (context.Session.Keys.Contains("model"))
             {
-                return context.Request.Cookies[cookieName];
+                ProductSearchModel model = context.Session.Get<ProductSearchModel>("model");
+                return model;
             }
             else
             {
-                return defaultValue;
+                ProductSearchModel model = new ProductSearchModel { 
+                    ProductName = "",
+                    StorageConditions = "",
+                    Package = "",
+                    ManufacturerId = 0
+                };
+                context.Session.Set("model", model);
+                return model;
             }
         }
     }
