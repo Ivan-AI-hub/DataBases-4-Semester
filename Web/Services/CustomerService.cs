@@ -26,7 +26,26 @@ namespace Web.Services
 
         public IEnumerable<Customer> GetByCondition(Func<Customer, bool> predicate)
         {
-            return Context.Customers.Where(x => predicate(x)).AsEnumerable();
+            IEnumerable<Customer> customers = null;
+            if (!Cache.TryGetValue(predicate.GetHashCode(), out customers))
+            {
+                customers = GetAll().Where(x => predicate(x));
+                if (customers != null)
+                {
+                    Cache.Set(predicate.GetHashCode(), customers, TimeSpan.FromSeconds(CacheTime));
+                }
+            }
+            return customers;
+        }
+
+        public IEnumerable<Customer> GetAll(WholesaleContext Context)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Customer> GetByCondition(WholesaleContext Context, Func<Customer, bool> predicate)
+        {
+            throw new NotImplementedException();
         }
     }
 }

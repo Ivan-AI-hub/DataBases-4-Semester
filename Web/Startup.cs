@@ -21,8 +21,7 @@ namespace Web
         }
 
         public void Configure(IHostEnvironment environment, IApplicationBuilder app,
-            CustomerService customerService, ProductService productService, ReceiptReportService receiptReportService,
-            ManufacturerService manufacturerService)
+            CustomerService customerService, ProductService productService, ReceiptReportService receiptReportService)
         {
             if (environment.IsDevelopment())
             {
@@ -117,7 +116,7 @@ namespace Web
                 #endregion
                 endpoints.MapGet("/info", (context) =>
                 {
-                    return context.Response.WriteAsync($"<H1>User: {context.User.ToString()}<H1>");
+                    return context.Response.WriteAsync($"<H1>User: {context.User}<H1>");
                 });
                 endpoints.MapControllers();
             });

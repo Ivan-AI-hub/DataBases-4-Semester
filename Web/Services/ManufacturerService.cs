@@ -26,7 +26,16 @@ namespace Web.Services
 
         public IEnumerable<Manufacturer> GetByCondition(Func<Manufacturer, bool> predicate)
         {
-            return Context.Manufacturers.Where(x => predicate(x)).AsEnumerable();
+            IEnumerable<Manufacturer> manufacturers = null;
+            if (!Cache.TryGetValue(predicate.GetHashCode(), out manufacturers))
+            {
+                manufacturers = GetAll().Where(x => predicate(x));
+                if (manufacturers != null)
+                {
+                    Cache.Set(predicate.GetHashCode(), manufacturers, TimeSpan.FromSeconds(CacheTime));
+                }
+            }
+            return manufacturers;
         }
     }
 }

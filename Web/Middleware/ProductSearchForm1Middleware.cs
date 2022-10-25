@@ -86,11 +86,11 @@ namespace Web.Middleware
                     builder.Append("<div>");
                     builder.Append("<H1>Products table<H1>");
                     builder.Append("<table>");
-                    builder.Append($"<td>Name</td><td>package</td><td>Manufacturer</td>");
+                    builder.Append($"<td>Name</td><td>package</td><td>storageConditions</td><td>Manufacturer</td>");
                     foreach (var product in products)
                     {
                         builder.Append("<tr>");
-                        builder.Append($"<td> {product.Name}</td><td> {product.Package}</td><td> {product.Manufacturer.Name}</td>");
+                        builder.Append($"<td> {product.Name}</td><td> {product.Package}</td><td>{product.StorageConditions}</td><td> {product.Manufacturer.Name}</td>");
                         builder.Append("</tr>");
                     }
                     builder.Append("</table>");

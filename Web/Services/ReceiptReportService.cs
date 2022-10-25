@@ -31,11 +31,16 @@ namespace Web.Services
 
         public IEnumerable<ReceiptReport> GetByCondition(Func<ReceiptReport, bool> predicate)
         {
-            return Context.ReceiptReports
-                .Include(x => x.Provaider)
-                .Include(x => x.Product)
-                .Include(x => x.Employer)
-                .Include(x => x.Storage).Where(x => predicate(x)).AsEnumerable();
+            IEnumerable<ReceiptReport> receiptReports = null;
+            if (!Cache.TryGetValue(predicate.GetHashCode(), out receiptReports))
+            {
+                receiptReports = GetAll().Where(x => predicate(x));
+                if (receiptReports != null)
+                {
+                    Cache.Set(predicate.GetHashCode(), receiptReports, TimeSpan.FromSeconds(CacheTime));
+                }
+            }
+            return receiptReports;
         }
     }
 }
