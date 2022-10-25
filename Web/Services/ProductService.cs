@@ -25,6 +25,21 @@ namespace Web.Services
             return Context.Products.Include(x => x.Manufacturer).Include(x => x.Type).ToList();
         }
 
+        public IEnumerable<Product> GetFromCach(int count, string cachKey)
+        {
+            IEnumerable<Product> products;
+            if (!Cache.TryGetValue(cachKey, out products))
+            {
+                products = GetAll().Take(count);
+                if (products != null)
+                {
+                    Cache.Set(cachKey, products, TimeSpan.FromSeconds(CacheTime));
+                }
+            }
+            return products;
+        }
+
+
         public IEnumerable<Product> GetByCondition(Func<Product, bool> predicate)
         {
             IEnumerable<Product> products = null;

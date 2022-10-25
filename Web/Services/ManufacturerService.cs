@@ -24,6 +24,21 @@ namespace Web.Services
             return Context.Manufacturers.AsEnumerable();
         }
 
+
+        public IEnumerable<Manufacturer> GetFromCach(int count, string cachKey)
+        {
+            IEnumerable<Manufacturer> manufacturers;
+            if (!Cache.TryGetValue(cachKey, out manufacturers))
+            {
+                manufacturers = GetAll().Take(count);
+                if (manufacturers != null)
+                {
+                    Cache.Set(cachKey, manufacturers, TimeSpan.FromSeconds(CacheTime));
+                }
+            }
+            return manufacturers;
+        }
+
         public IEnumerable<Manufacturer> GetByCondition(Func<Manufacturer, bool> predicate)
         {
             IEnumerable<Manufacturer> manufacturers = null;

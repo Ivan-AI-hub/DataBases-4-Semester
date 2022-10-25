@@ -7,17 +7,13 @@ namespace Web.Middleware
     public class ProductSearchForm1Middleware
     {
         private readonly RequestDelegate _next;
-        private ProductService _productService;
-        private ManufacturerService _manufacturerService;
 
-        public ProductSearchForm1Middleware(RequestDelegate next, ProductService productService, ManufacturerService manufacturerService)
+        public ProductSearchForm1Middleware(RequestDelegate next)
         {
             this._next = next;
-            _productService = productService;
-            _manufacturerService = manufacturerService;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, ProductService productService, ManufacturerService manufacturerService)
         {
 
             await _next.Invoke(context);
@@ -32,7 +28,7 @@ namespace Web.Middleware
                 IEnumerable<Product> products;
                 if (manufacturerId == 0)
                 {
-                    products = _productService.GetByCondition(x =>
+                    products = productService.GetByCondition(x =>
                     {
                         return x.Name.Contains(productName) && x.StorageConditions.Contains(storageConditions) &&
                         x.Package.Contains(package);
@@ -40,7 +36,7 @@ namespace Web.Middleware
                 }
                 else
                 {
-                    products = _productService.GetByCondition(x =>
+                    products = productService.GetByCondition(x =>
                     {
                         return x.Name.Contains(productName) && x.StorageConditions.Contains(storageConditions) &&
                         x.Package.Contains(package) && x.ManufacturerId == manufacturerId;
@@ -65,7 +61,7 @@ namespace Web.Middleware
                 builder.Append($"<select name='manufacturerName'  value = '{manufacturerId}'>");
                 builder.Append($"<option value='0'> Any</opinion>");
 
-                foreach (var manufacturer in _manufacturerService.GetAll())
+                foreach (var manufacturer in manufacturerService.GetAll())
                 {
                     if(manufacturerId == manufacturer.ManufacturerId)
                     {

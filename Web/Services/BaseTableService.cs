@@ -10,6 +10,7 @@ namespace Web.Services
 
         public int CacheTime { get; }
         public IEnumerable<T> GetAll();
+        public IEnumerable<T> GetFromCach(int count, string cachKey);
         public IEnumerable<T> GetByCondition(Func<T, bool> predicate);
     }
 }
