@@ -67,7 +67,10 @@ namespace Web
 
                 endpoints.MapGet("/info", (context) =>
                 {
-                    return context.Response.WriteAsync($"<H1>User: {context.User}<H1>");
+                    string browser = context.Request.Headers["sec-ch-ua"];
+                    string platform = context.Request.Headers["sec-ch-ua-platform"];
+
+                    return context.Response.WriteAsync("<p>Browser: " + browser + "</p><p>Platform: " + platform);
                 });
                 endpoints.MapControllers();
             });
